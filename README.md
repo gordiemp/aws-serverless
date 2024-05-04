@@ -1,4 +1,4 @@
-# task03
+# Tasks
 
 High level project overview - business value it brings, non-detailed technical overview.
 
@@ -6,10 +6,6 @@ High level project overview - business value it brings, non-detailed technical o
 All the technical details described below are actual for the particular
 version, or a range of versions of the software.
 ### Actual for versions: 1.0.0
-
-## task03 diagram
-
-![task03](pics/task03_diagram.png)
 
 ## Lambdas descriptions
 

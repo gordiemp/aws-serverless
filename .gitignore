@@ -1,5 +1,5 @@
 .syndicate
-.syndicate-config-dev
+.syndicate-config-*/
 .idea
 target/
 **/target/
