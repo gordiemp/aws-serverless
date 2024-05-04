@@ -1,0 +1,15 @@
+{
+    "Version": "2012-10-17",
+    "Statement": []
+  }
+
+  aws iam update-assume-role-policy --role-name cmtr-1a3f035e-iam-ar-iam_role-assume --policy-document '{
+    "Version": "2012-10-17",
+    "Statement": [
+        {
+        "Effect": "Allow",
+        "Principal": { "AWS": "arn:aws:iam::905418349556:root"},
+        "Action": "sts:AssumeRole"
+        }
+    ]
+}' --profile temporary
