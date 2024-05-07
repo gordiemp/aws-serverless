@@ -9,7 +9,6 @@ from commons.abstract_lambda import AbstractLambda
 
 _LOG = get_logger('AuditProducer-handler')
 
-
 class AuditProducer(AbstractLambda):
 
     def validate_request(self, event) -> dict:
@@ -17,8 +16,8 @@ class AuditProducer(AbstractLambda):
             raise ValueError('Records not found in event')
         
     def handle_request(self, event, context):
-        """Explain incoming event here"""
-        _LOG.info(event)
+
+        _LOG.info("Incoming event: %s", event)
 
         dynamodb = boto3.resource('dynamodb')
         conf_table_name = os.environ['CONFIGURATION_TABLE']
@@ -31,6 +30,8 @@ class AuditProducer(AbstractLambda):
         iso_format = now.isoformat()
 
         for record in event.get('Records', []):
+            _LOG.info("Processing record: %s", record)
+            
             if record['eventName'] == 'INSERT':
                 item = {
                     "id": str(uuid.uuid4()),
@@ -50,7 +51,10 @@ class AuditProducer(AbstractLambda):
                     "oldValue": int(record['dynamodb']['OldImage']['value']['N']),
                     "newValue": int(record['dynamodb']['NewImage']['value']['N'])
                 }
-
+            else:
+                _LOG.warn("Unexpected event type: %s", record['eventName'])
+                continue
+            
             try:
                 response = table.put_item(Item=item)
                 _LOG.info(f'DynamoDb response: {response}')
@@ -62,9 +66,7 @@ class AuditProducer(AbstractLambda):
             'message': 'Audit record handled',
         }
 
-
 HANDLER = AuditProducer()
-
 
 def lambda_handler(event, context):
     return HANDLER.lambda_handler(event=event, context=context)
