@@ -16,8 +16,8 @@
   ],
   "event_sources": [
     {
-      "resource_type": "dynamodb_trigger",
       "target_table": "Configuration",
+      "resource_type": "dynamodb_trigger",
       "batch_size": 1
     }
   ],
