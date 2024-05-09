@@ -22,6 +22,7 @@ class UuidGenerator(AbstractLambda):
         pass
 
     def handle_request(self, event, context):
+        """Explain incoming event here"""
         _LOG.info(f'Event: {event}')
 
         bucket_name = os.environ['S3_BUCKET_NAME']

@@ -12,16 +12,15 @@ _LOG = get_logger('AuditProducer-handler')
 class AuditProducer(AbstractLambda):
 
     def validate_request(self, event) -> dict:
-        if 'Records' not in event:
-            raise ValueError('Records not found in event')
+        pass
         
     def handle_request(self, event, context):
 
         _LOG.info("Incoming event: %s", event)
 
         dynamodb = boto3.resource('dynamodb')
-        conf_table_name = os.environ['CONFIGURATION_TABLE']
-        audit_table_name = os.environ['AUDIT_TABLE']
+        conf_table_name = os.environ.get['CONFIGURATION_TABLE']
+        audit_table_name = os.environ.get['AUDIT_TABLE']
         _LOG.info(f'CONFIGURATION_TABLE: {conf_table_name}')
         _LOG.info(f'AUDIT_TABLE: {audit_table_name}')
         table = dynamodb.Table(audit_table_name)
