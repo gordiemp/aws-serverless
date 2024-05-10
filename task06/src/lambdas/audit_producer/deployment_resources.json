@@ -1,10 +1,14 @@
 {
   "audit_producer-role": {
-    "predefined_policies": [],
+    "resource_type": "iam_role",
     "principal_service": "lambda",
-    "custom_policies": [
-      "lambda-basic-execution"
+    "predefined_policies": [
+      "AmazonDynamoDBFullAccess",
+      "AWSLambdaBasicExecutionRole"
     ],
-    "resource_type": "iam_role"
+    "custom_policies": [],
+    "allowed_accounts": [],
+    "instance_profile": false,
+    "permissions_boundary": ""
   }
 }

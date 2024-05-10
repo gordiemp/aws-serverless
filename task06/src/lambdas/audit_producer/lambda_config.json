@@ -7,24 +7,21 @@
   "runtime": "python3.10",
   "memory": 128,
   "timeout": 100,
-  "lambda_path": "lambdas\\audit_producer",
+  "lambda_path": "lambdas/audit_producer",
   "dependencies": [
     {
-      "resource_name": "Configuration",
-      "resource_type": "dynamodb_table"
+      "resource_type": "dynamodb_table",
+      "resource_name": "Configuration"
     }
   ],
   "event_sources": [
     {
-      "target_table": "Configuration",
-      "resource_type": "dynamodb_trigger",
-      "batch_size": 1
-    }
+	    "resource_type": "dynamodb_trigger",
+	    "target_table": "Configuration",
+	    "batch_size": 1
+		}
   ],
-  "env_variables": {
-    "CONFIGURATION_TABLE": "${configuration_table}",
-    "AUDIT_TABLE": "${audit_table}"
-  },
+  "env_variables": {},
   "publish_version": false,
   "url_config": {},
   "ephemeral_storage": 512,
