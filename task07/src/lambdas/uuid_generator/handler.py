@@ -1,44 +1,36 @@
-import json
-import os
-import uuid
-from datetime import datetime
-
 import boto3
+import datetime
+import json
+import uuid
+
 from commons.log_helper import get_logger
 from commons.abstract_lambda import AbstractLambda
 
 _LOG = get_logger('UuidGenerator-handler')
-
-
-def get_datetime():
-    now = datetime.now()
-    iso_format = now.isoformat()
-    return iso_format[:23] + 'Z'
-
+s3_client = boto3.client("s3")
 
 class UuidGenerator(AbstractLambda):
 
     def validate_request(self, event) -> dict:
         pass
-
+        
     def handle_request(self, event, context):
-        """Explain incoming event here"""
-        _LOG.info(f'Event: {event}')
 
-        bucket_name = os.environ['S3_BUCKET_NAME']
-        _LOG.info(f'S3_BUCKET_NAME: {bucket_name}')
-
-        s3 = boto3.client('s3')
-        file_name = get_datetime()
-        _LOG.info(f'file_name: {file_name}')
-
-        contents = {'ids': [str(uuid.uuid4()) for _ in range(10)]}
-        contents_serialized = json.dumps(contents)
-
-        _LOG.info(f'uuid_data: {contents}')
-        s3.put_object(Body=contents_serialized, Bucket=bucket_name, Key=file_name)
-
-        return 200
+        payload = {
+            "ids": []
+        }
+        for _ in range(10):
+            id = str(uuid.uuid4())
+            payload["ids"].append(id)
+    
+        _LOG.info(f"payload: {payload}")
+        timestamp = datetime.datetime.now().strftime("%Y-%m-%dT%H:%M:%S.%f")
+        _LOG.info(f"timestamp: {timestamp}")
+        s3_client.put_object(
+            Bucket="cmtr-1a3f035e-uuid-storage-test",
+            Key=timestamp,
+            Body=bytes(json.dumps(payload).encode("utf-8"))
+        )
 
 
 HANDLER = UuidGenerator()
